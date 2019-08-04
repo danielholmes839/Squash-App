@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+  		<h1 class="display-3">ODSA Genius</h1>
+  		<p>ODSA Genius combines stats from Rankenstein and Machine Learning to accurately predict the outcome of new matches. 
+  		We also make predictions for results recently uploaded to Rankenstein and track our accuracy.</p>
+	</div>
+</div>
+
+<div class="container">
+    <!-- Example row of columns -->
+	<div class="row">
+	  
+	  <div class="col-md-4">
+	    <h2>Predictions</h2>
+	    <hr class="my-1">
+	    <p>Using ODSA Genius you can make predictions between active players in the Ottawa Rankenstein rankings.</p>
+	    <p><a class="btn btn-primary" href="{{ url_for('predict') }}" role="button">Make a Prediction</a></p>
+	  </div>
+	  
+	  <div class="col-md-4">
+	    <h2>Results</h2>
+	    <hr class="my-1">
+	    <p>ODSA Genius keeps track of recent results from Rankenstein  </p>
+	    <p><a class="btn btn-primary" href="{{ url_for('results') }}" role="button">Results</a></p>
+	  </div>
+
+	  <div class="col-md-4">
+	    <h2>Source Code</h2>
+	    <hr class="my-1">
+	    <p>The source code for this website and the steps taken to generate the model are available on GitHub</p>
+	    <p><a class="btn btn-primary" href="#" role="button">GitHub</a></p>
+	  </div>
+
+	</div>
+
+</div>
+{% endblock content%}

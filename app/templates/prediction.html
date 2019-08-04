@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="my-3 jumbotron bg-light rounded">
+    <h1 class="display-4">{{ player1.name }} - {{ player2.name}}</h1>
+    <p class="lead">Prediction: {{ prediction }}</p>
+    <hr class="my-4">
+    <p class="lead">
+      <a class="btn btn-primary" href="{{ url_for('predict') }}" role="button">New Prediction</a>
+    </p>
+  </div>
+{% endblock content %}

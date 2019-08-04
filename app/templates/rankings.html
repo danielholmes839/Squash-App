@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">Club</th>
+                    <th scope="col">Matches</th>
+                    <th scope="col">Wins</th>
+                    <th scope="col">Losses</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Streak</th>
+                    <th scope="col">Trend</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for player in players %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.club }}</td>
+                    <td>{{ player.matches }}</td>
+                    <td>{{ player.wins }}</td>
+                    <td>{{ player.losses }}</td>
+                    <td>{{ player.rating }}</td>
+                    <td>{{ player.streak }}</td>
+                    <td>{{ player.trend }}</td>
+                </tr>
+            {% endfor %}
+            
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

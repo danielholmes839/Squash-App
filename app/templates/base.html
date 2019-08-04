@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+
+  {% if title %}
+    <title>ODSA Genius - {{ title }}</title>
+  {% else %}
+    <title>ODSA Genius</title>
+  {% endif%}
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  {% block css %}
+  {% endblock css %}
+
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav class="navbar navbar-light navbar-expand-lg navbar-fixed-top bg-light py-4" id="mainNav">
+    <div class="container">
+      <h1 class="navbar-brand">ODSA Genius</h1>
+
+      <button class="navbar-toggler navbar-toggler-D1" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Nav links -->
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="nav navbar-nav ml-auto p-3">
+          
+          <li class="nav-item nav-list-item ml-4">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+          </li>
+
+          <li class="nav-item nav-list-item ml-4">
+            <a class="nav-link" href="{{ url_for('predict') }}">New Prediction</a>
+          </li>
+
+          <li class="nav-item nav-list-item ml-4">
+            <a class="nav-link" href="{{ url_for('results') }}">Results</a>
+          </li>
+
+          <li class="nav-item nav-list-item ml-4">
+            <a class="nav-link" href="{{ url_for('rankings') }}">Rankings</a>
+          </li>
+
+          <!-- Other links -->
+          <li class="nav-item nav-list-item dropdown ml-4">
+            <a class="nav-link" dropdown-toggle" href="#" 
+            id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                More
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="http://danielholmes.ca/">danielholmes.ca</a>
+              <a class="dropdown-item" href="https://www.rankenstein.ca/index.pl">Rankenstein</a>
+              <a class="dropdown-item" href="https://www.odsa.ca/">Ottawa District Squash Association</a>
+            </div>
+
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <div id="page-content" class="container-fluid">
+    {% block content %}
+    {% endblock content %}
+  </div>
+  
+  <footer class="footer mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 text-sm">
+          <a class='text-muted' href="http://danielholmes.ca/">Created by Daniel Holmes</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+<!-- Bootstrap Javascript -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" 
+integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- Extra script -->
+{% block script %}
+{% endblock script %}
+
+</html>

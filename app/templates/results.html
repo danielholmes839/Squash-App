@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h3 class="font-weight-bold">Results</h3>
+        <div class="my-3">
+            <h3 id="winner_accuracy" class="d-inline lead mr-5"></h3>
+            <h3 id="score_accuracy" class="d-inline lead mr-5"></h3>
+            <h3 id="upset_accuracy" class="d-inline lead"></h3>
+        </div>
+
+        <table id="results" class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Winner</th>
+                    <th scope="col">Loser</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Predicted Score</th>
+                    <th scope="col">Upset</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.date }}</td>
+                    <td>{{ result.p1 }}</td>
+                    <td>{{ result.p2 }}</td>
+                    <td>{{ result.p1_score }} - {{ result.p2_score }}</td>
+                    <td>{{ result.pred_p1_score }} - {{ result.pred_p2_score }}</td>
+                    <td>{{ result.upset }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+// Table and CSS
+var table = document.getElementById('results');
+var correct_css = ('list-group-item', 'list-group-item-success');
+var incorrect_css = ('list-group-item', 'list-group-item-danger');
+
+// Columns 
+var real_col = 3;
+var predict_col = 4;
+var upset_col = 5;
+
+// Accuracies
+var total = table.rows.length - 1; // -1 accounts for table head
+var total_upsets = 0;
+var correct_upsets = 0;
+var correct_winner = 0;
+var correct_score = 0;
+
+// Add CSS classes and count correct predictions 
+for (var i = 1; i < table.rows.length; i++) {
+    var row = table.rows[i];
+
+    // Correct score and winner
+    if (row.cells[real_col].innerHTML === row.cells[predict_col].innerHTML) {
+        row.cells[predict_col].classList.add(correct_css);
+        correct_winner += 1;
+        correct_score += 1;
+    }
+
+    // Correct winner
+    else if (row.cells[real_col].innerHTML[0] === row.cells[predict_col].innerHTML[0]) {
+        row.cells[predict_col].classList.add(correct_css);
+        correct_winner += 1;
+    }
+
+    // Incorrect completely
+    else {
+        row.cells[predict_col].classList.add(incorrect_css);
+    }
+
+    // Upsets
+    if (row.cells[upset_col].innerHTML[0] === 'T') {
+        total_upsets += 1;
+
+        if (row.cells[real_col].innerHTML[0] === '3' && row.cells[predict_col].innerHTML[0] === '3') {
+            correct_upsets += 1;
+        }
+    }
+}
+
+document.getElementById('winner_accuracy').innerHTML = 'Winner Accuracy: ' + Math.round((correct_winner / total) * 100) + '%';
+document.getElementById('score_accuracy').innerHTML = 'Score Accuracy: ' + Math.round((correct_score / total) * 100) + '%';
+document.getElementById('upset_accuracy').innerHTML = 'Upset Accuracy: ' + Math.round((correct_upsets / total_upsets) * 100) + '%' + ' (' + correct_upsets + '/' + total_upsets +')';
+</script>
+{% endblock script %}

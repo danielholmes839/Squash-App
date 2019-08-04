@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<datalist id="players">
+{% for player in players %}
+    <option value="{{ player.name }}">
+{% endfor %}
+</datalist>
+
+<div class="container">
+    <h4 class="text-D1 bold"> {{ form.name }} </h4>
+    <form method="POST" action="">
+        
+        {{ form.hidden_tag() }}
+
+        <fieldset>
+
+            <div class="form-group">
+                {{ form.player1.label(class="form-control-label text-D2") }}
+                {{ form.player1(id="p1", class="form-control form-control-lg border border-L2 bg-L0", autocomplete="off", list="players") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.player2.label(class="form-control-label text-D2") }}
+                {{ form.player2(id="p2", class="form-control form-control-lg border border-L2 bg-L0", autocomplete="off", list="players") }}
+            </div>
+
+        </fieldset>
+
+        <div class="form-group" align="center">
+            {{ form.submit(class="btn btn-outline-primary btn-block bold") }}
+        </div>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <!-- Errors -->
+        {% for message in messages %}
+        <div class="alert alert-E1" role="alert">
+          <p class="text-E1 bold">{{ message }}</p>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+</div>
+
+{% endblock content %}
