@@ -32,12 +32,6 @@ def get_rankings():
     return result['rankings'], result['lastUpdate']
 
 
-def get_results():
-    """ Get results from rankenstein """
-    print('getting results')
-    return requests.get('https://odsa.rankenstein.ca/api.pl?action=results').json()[:100]
-
-
 def create_player(json):
     """ Creates a player database record from a player ranking """
     return Player(
@@ -52,6 +46,11 @@ def create_player(json):
         trend=json['trend'],
         last_played=dt.datetime.strptime(json['lastMatch'], '%Y-%m-%d')
     )
+
+
+def get_results():
+    """ Get results from rankenstein """
+    return requests.get('https://odsa.rankenstein.ca/api.pl?action=results').json()[:100]
 
 
 def create_result(json):
@@ -96,16 +95,18 @@ def update_rankings():
 
 def update_results():
     """ Update results """
-    results = get_results()
 
+    # Last 100 results from rankenstein in json
+    results = get_results()
     for json in results:
 
+        # If the result has not already been created at last update
         if not Result.query.get(int(json['id'])):
 
+            # Create the result
             result = create_result(json)
-
             if result:
-                print('Created result from', json)
+                print('Added Result:', json)
                 db.session.add(result)
                 db.session.commit()
 

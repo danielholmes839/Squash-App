@@ -15,7 +15,6 @@ from app.predictions import get_prediction
 @app.before_first_request
 def create_database():
     """ Make sure database tables exist """
-    print('Created Database')
     db.create_all()
     db.session.commit()
 
@@ -23,7 +22,6 @@ def create_database():
 @app.before_first_request
 def schedule_tasks():
     """ Schedule database updates """
-    print('Scheduled Tasks')
     scheduler = BackgroundScheduler()
     scheduler.add_job(rankenstein.update, 'interval', hours=12)
     scheduler.start()
@@ -82,6 +80,15 @@ def rankings():
 def create_key():
     """ Create an API key """
     return auth.create()
+
+
+@app.route('/api/create-database')
+@auth.required()
+def create_database():
+    """ Reset the data base """
+    db.create_all()
+    db.session.commit()
+    return 'Successfully Created Database'
 
 
 @app.route('/api/reset-database')
