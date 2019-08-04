@@ -96,7 +96,11 @@ def update_results():
     """ Update results """
     results = get_results()
     most_recent_entry_date = None
-    most_recent_result = Result.query.order_by(-Result.entry_date).first()
+
+    try:
+        most_recent_result = Result.query.order_by(-Result.entry_date).first()
+    except:
+        most_recent_result = None
 
     if most_recent_result:
         most_recent_entry_date = most_recent_result.entry_date
