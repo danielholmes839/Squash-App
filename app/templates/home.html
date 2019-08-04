@@ -4,37 +4,56 @@
 <div class="jumbotron">
 	<div class="container">
   		<h1 class="display-3">ODSA Genius</h1>
-  		<p>ODSA Genius combines stats from Rankenstein and Machine Learning to accurately predict the outcome of new matches. 
-  		We also make predictions for results recently uploaded to Rankenstein and track our accuracy.</p>
+  		<p>ODSA Genius uses stats from Rankenstein and Machine Learning to accurately predict the outcome of any matchup.</p>
 	</div>
 </div>
 
 <div class="container">
-    <!-- Example row of columns -->
 	<div class="row">
-	  
-	  <div class="col-md-4">
-	    <h2>Predictions</h2>
-	    <hr class="my-1">
-	    <p>Using ODSA Genius you can make predictions between active players in the Ottawa Rankenstein rankings.</p>
-	    <p><a class="btn btn-primary" href="{{ url_for('predict') }}" role="button">Make a Prediction</a></p>
-	  </div>
-	  
-	  <div class="col-md-4">
-	    <h2>Results</h2>
-	    <hr class="my-1">
-	    <p>ODSA Genius keeps track of recent results from Rankenstein  </p>
-	    <p><a class="btn btn-primary" href="{{ url_for('results') }}" role="button">Results</a></p>
-	  </div>
 
-	  <div class="col-md-4">
-	    <h2>Source Code</h2>
-	    <hr class="my-1">
-	    <p>The source code for this website and the steps taken to generate the model are available on GitHub</p>
-	    <p><a class="btn btn-primary" href="#" role="button">GitHub</a></p>
-	  </div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4 mb-5">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">Predictions</h2>
+            <hr>
+            <p class="card-text">Using ODSA Genius you can make predictions between active players in the Ottawa Rankenstein rankings.</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">New Prediction</a>
+          </div>
+        </div>
+      </div>
 
-	</div>
+      <!-- /.col-md-4 -->
+      <div class="col-md-4 mb-5">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">Results</h2>
+            <hr>
+            <p class="card-text">ODSA Genius monitors its accuracy on the latest results straight from Rankenstein.</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">Results</a>
+          </div>
+        </div>
+      </div>
 
+      <!-- /.col-md-4 -->
+      <div class="col-md-4 mb-5">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="card-title">Source Code</h2>
+            <hr>
+            <p class="card-text">The source code for this website and the steps taken to generate the machine learning model are available on GitHub</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary btn-sm">Machine Learning GitHub</a>
+            <a href="#" class="btn btn-primary btn-sm">App GitHub</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
 </div>
 {% endblock content%}
