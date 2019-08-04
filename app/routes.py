@@ -17,6 +17,7 @@ def create_database():
     """ Make sure database tables exist """
     print('Created Database')
     db.create_all()
+    db.session.commit()
 
 
 @app.before_first_request
@@ -89,6 +90,7 @@ def reset_database():
     """ Reset the data base """
     db.drop_all()
     db.create_all()
+    db.session.commit()
     return 'Successfully Reset Database'
 
 
