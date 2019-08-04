@@ -15,12 +15,14 @@ from app.predictions import get_prediction
 @app.before_first_request
 def create_database():
     """ Make sure database tables exist """
+    print('Created Database')
     db.create_all()
 
 
 @app.before_first_request
 def schedule_tasks():
     """ Schedule database updates """
+    print('Scheduled Tasks')
     scheduler = BackgroundScheduler()
     scheduler.add_job(rankenstein.update, 'interval', hours=12)
     scheduler.start()
