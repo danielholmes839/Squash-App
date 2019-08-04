@@ -34,6 +34,7 @@ def get_rankings():
 
 def get_results():
     """ Get results from rankenstein """
+    print('getting results')
     return requests.get('https://odsa.rankenstein.ca/api.pl?action=results').json()[:100]
 
 
@@ -104,12 +105,14 @@ def update_results():
             result = create_result(json)
 
             if result:
+                print('Created result from', json)
                 db.session.add(result)
-
-    db.session.commit()
+                db.session.commit()
 
 
 def update():
     """ Update players and results """
+    print('Updating Rankings')
     update_rankings()
+    print('Updating Results')
     update_results()
