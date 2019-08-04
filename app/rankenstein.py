@@ -55,6 +55,7 @@ def create_player(json):
 
 def create_result(json):
     """ Create a result with a prediction from results from rankenstein """
+    print(json)
     p1 = Player.query.get(int(json['winnerId']))
     p2 = Player.query.get(int(json['loserId']))
     year, month, day = json['date'].split('-')
