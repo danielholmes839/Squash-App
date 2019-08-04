@@ -55,7 +55,6 @@ def create_player(json):
 
 def create_result(json):
     """ Create a result with a prediction from results from rankenstein """
-    print(json)
     p1 = Player.query.get(int(json['winnerId']))
     p2 = Player.query.get(int(json['loserId']))
     year, month, day = json['date'].split('-')
@@ -65,6 +64,7 @@ def create_result(json):
         upset = p1.rating < p2.rating
 
         return Result(
+            id=json['id'],
             p1_id=json['winnerId'],
             p2_id=json['loserId'],
             p1=json['winnerName'],
@@ -96,28 +96,12 @@ def update_rankings():
 def update_results():
     """ Update results """
     results = get_results()
-    most_recent_entry_date = None
-
-    try:
-        most_recent_result = Result.query.order_by(-Result.entry_date).first()
-    except:
-        most_recent_result = None
-
-    if most_recent_result:
-        most_recent_entry_date = most_recent_result.entry_date
 
     for json in results:
 
-        if json['entryDate']:
+        if not Result.query.get(int(json['id'])):
 
-            result_entry_date = dt.datetime.strptime(json['entryDate'], '%Y-%m-%d %H:%M:%S')
-            result = None
-
-            if not most_recent_entry_date:
-                result = create_result(json)
-
-            elif result_entry_date > most_recent_entry_date:
-                result = create_result(json)
+            result = create_result(json)
 
             if result:
                 db.session.add(result)
