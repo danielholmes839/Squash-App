@@ -8,11 +8,6 @@ from flask_bcrypt import Bcrypt
 from flask_heroku import Heroku
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-
-os.environ['MASTER_KEY'] = 'password'
-
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['ELEPHANT_POSTGRESQL_DB']
 

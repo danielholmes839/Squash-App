@@ -12,7 +12,6 @@ from app.models import APIKey
 def create():
     """ Create new API keys """
     credentials = request.get_json()
-    print(request.authorization, os.environ['MASTER_KEY'])
 
     if request.authorization['password'] == os.environ['MASTER_KEY']:
 
