@@ -13,22 +13,14 @@ from app.forms import PredictionForm
 from app.predictions import get_prediction
 
 
-# Removed Temporarily
-#@app.before_first_request
-#def create_database():
-#    """ Make sure database tables exist """
-#    db.create_all()
-#    db.session.commit()
+@app.before_first_request
+def schedule_tasks():
+    """ Schedule database updates """
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(rankenstein.update, 'interval', hours=12)
+    scheduler.start()
 
-
-#@app.before_first_request
-#def schedule_tasks():
-#    """ Schedule database updates """
-#    scheduler = BackgroundScheduler()
-#    scheduler.add_job(rankenstein.update, 'interval', hours=12)
-#    scheduler.start()
-
-#    atexit.register(lambda: scheduler.shutdown())
+    atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/')
