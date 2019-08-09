@@ -4,6 +4,7 @@
 import atexit
 
 from flask import render_template, url_for, redirect, request
+from sqlalchemy import desc
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from app import app, db, rankenstein, auth
@@ -12,21 +13,22 @@ from app.forms import PredictionForm
 from app.predictions import get_prediction
 
 
-@app.before_first_request
-def create_database():
-    """ Make sure database tables exist """
-    db.create_all()
-    db.session.commit()
+# Removed Temporarily
+#@app.before_first_request
+#def create_database():
+#    """ Make sure database tables exist """
+#    db.create_all()
+#    db.session.commit()
 
 
-@app.before_first_request
-def schedule_tasks():
-    """ Schedule database updates """
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(rankenstein.update, 'interval', hours=12)
-    scheduler.start()
+#@app.before_first_request
+#def schedule_tasks():
+#    """ Schedule database updates """
+#    scheduler = BackgroundScheduler()
+#    scheduler.add_job(rankenstein.update, 'interval', hours=12)
+#    scheduler.start()
 
-    atexit.register(lambda: scheduler.shutdown())
+#    atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/')
@@ -65,7 +67,7 @@ def prediction():
 @app.route('/results')
 def results():
     """ Results """
-    r = Result.query.limit(50).all()
+    r = Result.query.order_by(desc(Result.date)).limit(50).all()
     return render_template('results.html', results=r, title='Results')
 
 
