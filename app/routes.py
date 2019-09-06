@@ -7,7 +7,7 @@ from flask import render_template, url_for, redirect, request
 from sqlalchemy import desc
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from app import app, db, rankenstein, auth
+from app import app, db, rankenstein, auth, maintenance
 from app.models import Player, Result
 from app.forms import PredictionForm
 from app.predictions import get_prediction
@@ -70,50 +70,43 @@ def rankings():
     return render_template('rankings.html', players=players, title='Rankings')
 
 
-@app.route('/api/create-key')
+@app.route('/api/create-key', methods=['POST'])
 def create_key():
     """ Create an API key """
-    return auth.create()
+    credentials = request.get_json(force=True)
+    return auth.create(credentials)
 
 
-@app.route('/api/create-database')
+@app.route('/api/create-database', methods=['POST'])
 @auth.required()
 def create_database():
     """ Reset the data base """
-    db.create_all()
-    db.session.commit()
-    return 'Successfully Created Database'
+    return maintenance.create_database()
 
 
-@app.route('/api/reset-database')
+@app.route('/api/reset-database', methods=['POST'])
 @auth.required()
 def reset_database():
     """ Reset the data base """
-    db.drop_all()
-    db.create_all()
-    db.session.commit()
-    return 'Successfully Reset Database'
+    return maintenance.reset_db()
 
 
-@app.route('/api/update-players')
+@app.route('/api/update-players', methods=['POST'])
 @auth.required()
 def update_players():
     """ Update players """
-    rankenstein.update_rankings()
-    return 'Successfully Updated Players'
+    return rankenstein.update_rankings()
 
 
-@app.route('/api/update-results')
+@app.route('/api/update-results', methods=['POST'])
 @auth.required()
 def update_results():
     """ Update results """
-    rankenstein.update_results()
-    return 'Successfully Updated Results'
+    return rankenstein.update_results()
 
 
-@app.route('/api/update')
+@app.route('/api/update', methods=['POST'])
 @auth.required()
 def update():
     """ Update players and results """
-    rankenstein.update()
-    return 'Successfully Updated Players and Results'
+    return rankenstein.update()

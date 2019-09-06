@@ -9,11 +9,9 @@ from app import bcrypt, db
 from app.models import APIKey
 
 
-def create():
+def create(credentials):
     """ Create new API keys """
-    credentials = request.get_json()
-
-    if request.authorization['password'] == os.environ['MASTER_KEY']:
+    if credentials['key'] == os.environ['MASTER_KEY']:
 
         existing_key = APIKey.query.filter_by(username=credentials['username']).first()
 
@@ -37,9 +35,10 @@ def create():
 def authenticate():
     """ Authenticate the API request """
     try:
-        key = APIKey.query.filter_by(username=request.authorization['username']).first()
+        credentials = request.get_json(force=True)
+        key = APIKey.query.filter_by(username=credentials['username']).first()
 
-        if bcrypt.check_password_hash(key.password, request.authorization['password']):
+        if bcrypt.check_password_hash(key.password, credentials['password']):
             return True
 
     except Exception:
