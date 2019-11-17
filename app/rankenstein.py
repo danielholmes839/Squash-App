@@ -53,7 +53,7 @@ def get_results():
     return requests.get('https://odsa.rankenstein.ca/api.pl?action=results').json()[:100]
 
 
-def create_record(json):
+def create_result(json):
     """ Create a result with a prediction from results from rankenstein """
     p1 = Player.query.get(int(json['winnerId']))
     p2 = Player.query.get(int(json['loserId']))
@@ -91,7 +91,6 @@ def update_rankings():
         db.session.add(player)
 
     db.session.commit()
-    return 'Successfully Updated Players'
 
 
 def update_results():
@@ -99,23 +98,22 @@ def update_results():
 
     # Last 100 results from rankenstein in json
     results = get_results()
-    for result in results:
+    for json in results:
 
         # If the result has not already been created at last update
-        if not Result.query.get(int(result['id'])):
+        if not Result.query.get(int(json['id'])):
 
             # Create the result
-            record = create_record(result)
-            if record:
-                db.session.add(record)
+            result = create_result(json)
+            if result:
+                print('Added Result:', json)
+                db.session.add(result)
                 db.session.commit()
-
-    return 'Successfully Updated Results'
 
 
 def update():
     """ Update players and results """
+    print('Updating Rankings')
     update_rankings()
+    print('Updating Results')
     update_results()
-
-    return 'Successfully Updated Players and Results'

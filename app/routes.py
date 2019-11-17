@@ -7,7 +7,7 @@ from flask import render_template, url_for, redirect, request
 from sqlalchemy import desc
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from app import app, db, rankenstein, auth, maintenance
+from app import app, db, rankenstein, auth
 from app.models import Player, Result
 from app.forms import PredictionForm
 from app.predictions import get_prediction
@@ -70,58 +70,51 @@ def rankings():
     return render_template('rankings.html', players=players, title='Rankings')
 
 
-<<<<<<< HEAD
 @app.route('/api/create-key')
 @auth.master()
-=======
-@app.route('/api/create-key', methods=['POST'])
->>>>>>> 18b02cb03a0dc47a9c654745f95c6f631a740948
 def create_key():
     """ Create an API key """
-    credentials = request.get_json(force=True)
-    return auth.create(credentials)
+    return auth.create()
 
 
-<<<<<<< HEAD
 @app.route('/api/create-database')
 @auth.master()
-=======
-@app.route('/api/create-database', methods=['POST'])
-@auth.required()
->>>>>>> 18b02cb03a0dc47a9c654745f95c6f631a740948
 def create_database():
     """ Reset the data base """
-    return maintenance.create_database()
+    db.create_all()
+    db.session.commit()
+    return 'Successfully Created Database'
 
 
-<<<<<<< HEAD
 @app.route('/api/reset-database')
 @auth.master()
-=======
-@app.route('/api/reset-database', methods=['POST'])
-@auth.required()
->>>>>>> 18b02cb03a0dc47a9c654745f95c6f631a740948
 def reset_database():
     """ Reset the data base """
-    return maintenance.reset_db()
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
+    return 'Successfully Reset Database'
 
 
-@app.route('/api/update-players', methods=['POST'])
+@app.route('/api/update-players')
 @auth.required()
 def update_players():
     """ Update players """
-    return rankenstein.update_rankings()
+    rankenstein.update_rankings()
+    return 'Successfully Updated Players'
 
 
-@app.route('/api/update-results', methods=['POST'])
+@app.route('/api/update-results')
 @auth.required()
 def update_results():
     """ Update results """
-    return rankenstein.update_results()
+    rankenstein.update_results()
+    return 'Successfully Updated Results'
 
 
-@app.route('/api/update', methods=['POST'])
+@app.route('/api/update')
 @auth.required()
 def update():
     """ Update players and results """
-    return rankenstein.update()
+    rankenstein.update()
+    return 'Successfully Updated Players and Results'
