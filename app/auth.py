@@ -9,37 +9,70 @@ from app import bcrypt, db
 from app.models import APIKey
 
 
-def create():
-    """ Create new API keys """
-    credentials = request.get_json()
+def required():
+    """
+    API Key required authorization decorator
+    request should contain a 'username' and 'password' key
+    """
+    def inner_function(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if authenticate():
+                # continue to route
+                return f(*args, **kwargs)
+            else:
+                # failed to authenticate
+                return 'Authentication Failed'
+        return wrapper
+    return inner_function
 
-    if request.authorization['password'] == os.environ['MASTER_KEY']:
 
-        existing_key = APIKey.query.filter_by(username=credentials['username']).first()
+def master():
+    """
+    Master Key required authorization decorator
+    Used to create/reset the database and create new API Keys
+    request should container 'master' key that matches os.environ['MASTER-KEY']
+    """
+    def inner_function(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            credentials = request.get_json(force=True)
+            if credentials['master'] == os.environ['MASTER_KEY']:
+                # continue to route
+                return f(*args, **kwargs)
+            else:
+                return 'Authentication Failed'
+        return wrapper
+    return inner_function
 
-        if not existing_key:
 
-            key = APIKey(
-                username=credentials['username'],
-                password=bcrypt.generate_password_hash(credentials['password']).decode('utf-8')
-            )
+def create(credentials):
+    """
+    Create new API keys
+    Called from route that requires master auth
+    """
+    existing_key = APIKey.query.filter_by(username=credentials['username']).first()
 
-            db.session.add(key)
-            db.session.commit()
+    if not existing_key:
+        key = APIKey(
+            username=credentials['username'],
+            password=bcrypt.generate_password_hash(credentials['password']).decode('utf-8')
+        )
+        db.session.add(key)
+        db.session.commit()
+        return 'Successfully Created Key'
 
-            return 'Successfully Created Key'
-
-        return 'Failed to create a new API key - that username is already taken'
-
-    return 'Authentication Failed'
+    else:
+        return 'Username Already Taken'
 
 
 def authenticate():
     """ Authenticate the API request """
     try:
-        key = APIKey.query.filter_by(username=request.authorization['username']).first()
+        credentials = request.get_json(force=True)
+        key = APIKey.query.filter_by(username=credentials['username']).first()
 
-        if bcrypt.check_password_hash(key.password, request.authorization['password']):
+        if bcrypt.check_password_hash(key.password, credentials['password']):
             return True
 
     except Exception:
@@ -47,21 +80,3 @@ def authenticate():
 
     return False
 
-
-def required():
-    """ Basic Authorization Required """
-    def inner_function(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-
-            authenticated = authenticate()
-
-            if authenticated:
-                # Original function
-                return f(*args, **kwargs)
-
-            return 'Authentication Failed'
-
-        return wrapper
-
-    return inner_function
