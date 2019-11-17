@@ -13,17 +13,21 @@ if 'MASTER_KEY' not in os.environ:
 
 
 class DevelopmentConfig(object):
-    def __init__(self):
-        self.DEBUG = True
-        self.SQLAlCHEMY_DATABASE_URI = 'sqlite://test.db'
-        self.SECRET_KEY = 'secret'
+    DEBUG = True
+    SQLAlCHEMY_DATABASE_URI = 'sqlite://test.db'
+    SECRET_KEY = 'secret'
 
 
-class ProductionConfig(object):
-    def __init__(self):
-        self.DEBUG = False
-        self.SQLAlCHEMY_DATABASE_URI = os.environ['DB_URI']
-        self.SECRET_KEY = os.environ['SECRET_KEY']
+class ProductionAWSConfig(object):
+    DEBUG = False
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):
+        return os.environ['DB_URI']
+
+    @property
+    def SECRET_KEY(self):
+        return os.environ['SECRET_KEY']
 
 
 application = app = Flask(__name__)
