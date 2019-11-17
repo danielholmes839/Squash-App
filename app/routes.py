@@ -71,13 +71,14 @@ def rankings():
 
 
 @app.route('/api/create-key')
+@auth.master()
 def create_key():
     """ Create an API key """
     return auth.create()
 
 
 @app.route('/api/create-database')
-@auth.required()
+@auth.master()
 def create_database():
     """ Reset the data base """
     db.create_all()
@@ -86,7 +87,7 @@ def create_database():
 
 
 @app.route('/api/reset-database')
-@auth.required()
+@auth.master()
 def reset_database():
     """ Reset the data base """
     db.drop_all()
