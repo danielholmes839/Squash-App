@@ -18,7 +18,7 @@ class DevelopmentConfig(object):
     SECRET_KEY = 'secret'
 
 
-class ProductionAWSConfig(object):
+class ProductionConfig(object):
     DEBUG = False
 
     @property
