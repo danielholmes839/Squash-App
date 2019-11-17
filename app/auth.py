@@ -9,6 +9,7 @@ from app import bcrypt, db
 from app.models import APIKey
 
 
+<<<<<<< HEAD
 def required():
     """
     API Key required authorization decorator
@@ -25,6 +26,13 @@ def required():
                 return 'Authentication Failed'
         return wrapper
     return inner_function
+=======
+def create(credentials):
+    """ Create new API keys """
+    if credentials['key'] == os.environ['MASTER_KEY']:
+
+        existing_key = APIKey.query.filter_by(username=credentials['username']).first()
+>>>>>>> 18b02cb03a0dc47a9c654745f95c6f631a740948
 
 
 def master():

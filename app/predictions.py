@@ -19,7 +19,18 @@ def get_vector(p1, p2):
     d_rating = p2.rating - p1.rating
     d_trend = p2.trend - p1.trend
     d_streak = p2.streak - p1.streak
-    d_season_win_percentage = (p2.wins/p2.matches) - (p1.wins/p1.matches)
+
+    try:    # Possibility of division by 0 when calculating season win rate
+        p1_season_wr = p2.wins / p2.matches
+    except ZeroDivisionError:
+        p1_season_wr = 50
+
+    try:
+        p2_season_wr = p2.wins / p2.matches
+    except ZeroDivisionError:
+        p2_season_wr = 50
+
+    d_season_win_percentage = p2_season_wr - p1_season_wr
     d_rust = (p2.last_played - p1.last_played).days
 
     return [d_rating, d_hh, d_trend, d_streak, d_season_win_percentage, d_rust]
