@@ -70,14 +70,14 @@ def rankings():
     return render_template('rankings.html', players=players, title='Rankings')
 
 
-@app.route('/api/create-key')
+@app.route('/api/create-key', methods=['POST'])
 @auth.master()
 def create_key():
     """ Create an API key """
     return auth.create()
 
 
-@app.route('/api/create-database')
+@app.route('/api/create-database', methods=['POST'])
 @auth.master()
 def create_database():
     """ Reset the data base """
@@ -86,7 +86,7 @@ def create_database():
     return 'Successfully Created Database'
 
 
-@app.route('/api/reset-database')
+@app.route('/api/reset-database', methods=['POST'])
 @auth.master()
 def reset_database():
     """ Reset the data base """
@@ -96,7 +96,7 @@ def reset_database():
     return 'Successfully Reset Database'
 
 
-@app.route('/api/update-players')
+@app.route('/api/update-players', methods=['POST'])
 @auth.required()
 def update_players():
     """ Update players """
@@ -104,7 +104,7 @@ def update_players():
     return 'Successfully Updated Players'
 
 
-@app.route('/api/update-results')
+@app.route('/api/update-results', methods=['POST'])
 @auth.required()
 def update_results():
     """ Update results """
@@ -112,7 +112,7 @@ def update_results():
     return 'Successfully Updated Results'
 
 
-@app.route('/api/update')
+@app.route('/api/update', methods=['POST'])
 @auth.required()
 def update():
     """ Update players and results """

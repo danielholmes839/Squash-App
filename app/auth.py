@@ -46,11 +46,12 @@ def master():
     return inner_function
 
 
-def create(credentials):
+def create():
     """
     Create new API keys
     Called from route that requires master auth
     """
+    credentials = request.get_json(force=True)
     existing_key = APIKey.query.filter_by(username=credentials['username']).first()
 
     if not existing_key:

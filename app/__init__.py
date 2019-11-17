@@ -8,6 +8,10 @@ from flask_bcrypt import Bcrypt
 from flask_heroku import Heroku
 
 
+if 'MASTER_KEY' not in os.environ:
+    os.environ['MASTER_KEY'] = 'master_key'
+
+
 class DevelopmentConfig(object):
     def __init__(self):
         self.DEBUG = True
@@ -22,11 +26,11 @@ class ProductionConfig(object):
         self.SECRET_KEY = os.environ['SECRET_KEY']
 
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 app.config.from_object(ProductionConfig())
 
-heroku = Heroku(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+heroku = Heroku(app)
 
 from app import routes
