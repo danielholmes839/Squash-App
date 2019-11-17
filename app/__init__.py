@@ -30,7 +30,7 @@ class ProductionConfig(object):
         return os.environ['SECRET_KEY']
 
 
-application = app = Flask(__name__)
+app = Flask(__name__)
 app.config.from_object(ProductionConfig())
 
 db = SQLAlchemy(app)
