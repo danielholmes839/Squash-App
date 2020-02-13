@@ -8,30 +8,30 @@ from flask_bcrypt import Bcrypt
 from flask_heroku import Heroku
 
 
-if 'MASTER_KEY' not in os.environ:
+def development_setup(app):
+    """ app config for development """
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+    app.config['SECRET_KEY'] = 'secret_key'
+    app.config['DEBUG'] = True
     os.environ['MASTER_KEY'] = 'master_key'
+    os.environ['MODE'] = 'development'
 
 
-class DevelopmentConfig(object):
-    DEBUG = True
-    SQLAlCHEMY_DATABASE_URI = 'sqlite://test.db'
-    SECRET_KEY = 'secret'
-
-
-class ProductionConfig(object):
-    DEBUG = False
-
-    @property
-    def SQLALCHEMY_DATABASE_URI(self):
-        return os.environ['DB_URI']
-
-    @property
-    def SECRET_KEY(self):
-        return os.environ['SECRET_KEY']
+def production_setup(app):
+    """ app config for heroku """
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URI']
+    app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+    app.config['DEBUG'] = False
 
 
 app = Flask(__name__)
-app.config.from_object(ProductionConfig())
+
+if 'MODE' in os.environ and os.environ['MODE'] == 'production':
+    production_setup(app)
+else:
+    development_setup(app)
+
+print(f'Running app in {os.environ["MODE"]} mode')
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
