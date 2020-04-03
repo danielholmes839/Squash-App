@@ -20,7 +20,7 @@ def get_hh(p1, p2):
         opponent_name = BeautifulSoup(match_up[0], 'html.parser').a.string
 
         if opponent_name == p2.name:
-            p1_win_rate = int(match_up[4].strip(' %'))
+            p1_win_rate = int(float(match_up[4].strip(' %')))
             return p1_win_rate
 
     return 50   # New match up assume even win rate
